@@ -14,6 +14,7 @@ export async function launchBrowser() {
 async function openUrl(url: string): Promise<string> {
   const page = await browser.newPage();
   await page.goto(url);
+  await page.waitForNetworkIdle();
   return await page.content();
 }
 
