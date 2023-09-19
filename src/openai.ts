@@ -3,12 +3,7 @@ import { PagePromise } from "openai/core.mjs";
 import { getGoogleSearchResults } from "./googleSearch";
 import { getWebpageTextContent } from "./puppeteer";
 
-const openai = new OpenAI({
-  apiKey:
-    process.env.OPENAI_API_KEY ||
-    "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",
-  organization: "org-JiB2kTrxmxsvRKp6D5Yo8XdP",
-});
+const openai = new OpenAI();
 
 export function getModels(): PagePromise<
   OpenAI.ModelsPage,

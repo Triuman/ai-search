@@ -1,8 +1,5 @@
 import axios from "axios";
 
-const GOOGLE_API_KEY = "AIzaSyDrat0ry3TtaqjMTFTjrvIlidfPELSaapg";
-const SEARCH_ENGINE_ID = "27aa1a39af8a44103";
-
 type CustomSearchResult = {
   kind: string;
   title: string;
@@ -51,8 +48,8 @@ export async function getGoogleSearchResults({
 
   const endpoint = "https://www.googleapis.com/customsearch/v1";
   const params = {
-    key: GOOGLE_API_KEY,
-    cx: SEARCH_ENGINE_ID,
+    key: process.env.GOOGLE_API_KEY,
+    cx: process.env.SEARCH_ENGINE_ID,
     q: query,
   };
 

@@ -1,3 +1,5 @@
+require("dotenv").config();
+
 import { onUserMessage } from "./openai";
 import { launchBrowser } from "./puppeteer";
 
