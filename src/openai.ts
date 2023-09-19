@@ -1,7 +1,7 @@
 import OpenAI from "openai";
 import { PagePromise } from "openai/core.mjs";
-import { getCleanedWebpage } from "./browser";
 import { getGoogleSearchResults } from "./googleSearch";
+import { getWebpageTextContent } from "./puppeteer";
 
 const openai = new OpenAI({
   apiKey:
@@ -19,7 +19,7 @@ export function getModels(): PagePromise<
 
 const functions: { [name: string]: (...args: any[]) => Promise<any> } = {};
 
-functions["getCleanedWebpage"] = getCleanedWebpage;
+functions["getCleanedWebpage"] = getWebpageTextContent;
 functions["getGoogleSearchResults"] = getGoogleSearchResults;
 
 const functionDescriptions: OpenAI.Chat.Completions.ChatCompletionCreateParams.Function[] =
@@ -74,7 +74,7 @@ function chat(newMessage: OpenAI.Chat.Completions.ChatCompletionMessageParam) {
 
   return openai.chat.completions
     .create({
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-16k",
       messages,
       functions: functionDescriptions,
     })
@@ -155,7 +155,7 @@ async function onFunctionCallRequest(
 
   const result = await functionToCall(functionArgs);
 
-  const resultShortened = result.slice(0, 6000);
+  const resultShortened = result.slice(0, 18000);
 
   console.log("resultShortened", resultShortened);
 
