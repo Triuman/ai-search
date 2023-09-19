@@ -156,15 +156,23 @@ async function onFunctionCallRequest(
     });
   }
 
-  const result = await functionToCall(functionArgs);
+  try {
+    const result = await functionToCall(functionArgs);
 
-  const resultShortened = result.slice(0, 18000);
+    const resultShortened = result.slice(0, 18000);
 
-  console.log("resultShortened", resultShortened);
+    console.log("resultShortened", resultShortened);
 
-  return chat({
-    role: "function",
-    content: JSON.stringify(resultShortened),
-    name: functionName,
-  });
+    return chat({
+      role: "function",
+      content: JSON.stringify(resultShortened),
+      name: functionName,
+    });
+  } catch (error) {
+    return chat({
+      role: "function",
+      content: `The call to function ${functionName} threw an error: ${error}`,
+      name: functionName,
+    });
+  }
 }
