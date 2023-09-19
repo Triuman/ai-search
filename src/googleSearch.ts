@@ -44,7 +44,7 @@ export async function getGoogleSearchResults({
 }: {
   query: string;
 }): Promise<SearchResult[]> {
-  console.log("getGoogleSearchResults", query);
+  console.log("Searching for", query);
 
   const endpoint = "https://www.googleapis.com/customsearch/v1";
   const params = {

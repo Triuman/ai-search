@@ -7,7 +7,7 @@ let browser: Browser;
 export async function launchBrowser() {
   browser = await puppeteer.launch({
     executablePath: `C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe`,
-    headless: false,
+    headless: true,
   });
 }
 

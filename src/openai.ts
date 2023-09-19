@@ -68,8 +68,6 @@ const messages: OpenAI.Chat.Completions.ChatCompletionMessageParam[] = [
 function chat(newMessage: OpenAI.Chat.Completions.ChatCompletionMessageParam) {
   messages.push(newMessage);
 
-  console.log("sending new message to openai", newMessage);
-
   return openai.chat.completions
     .create({
       model: "gpt-3.5-turbo-16k",
@@ -94,9 +92,9 @@ export async function onUserMessage(message: string): Promise<string | null> {
     content: message,
   });
 
-  console.log(agentResponse);
-
   if (!agentResponse) {
+    console.log("agentResponse didn't respond");
+
     return null;
   }
 
@@ -105,7 +103,7 @@ export async function onUserMessage(message: string): Promise<string | null> {
   while (functionCall) {
     agentResponse = await onFunctionCallRequest(functionCall);
 
-    console.log(agentResponse);
+    if (agentResponse?.content) console.log(agentResponse.content);
 
     if (!agentResponse) {
       return null;
@@ -138,9 +136,6 @@ async function onFunctionCallRequest(
   const functionName = functionCall.name;
   const functionArgs = JSON.parse(functionCall.arguments);
 
-  console.log("functionName", functionName);
-  console.log("functionArgs", functionArgs);
-
   const functionToCall = functions[functionName];
 
   if (!functionToCall) {
@@ -155,8 +150,6 @@ async function onFunctionCallRequest(
     const result = await functionToCall(functionArgs);
 
     const resultShortened = result.slice(0, 18000);
-
-    console.log("resultShortened", resultShortened);
 
     return chat({
       role: "function",
